@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
+import { useState} from "react";
 
 export default function Operation(){
 
@@ -69,9 +70,11 @@ border: 1px solid #A328D6;;
 background: #A328D6;
 border-radius: 8px;
 cursor:pointer; 
+text-decoration: none;
 }
 p{
 color:white;
+
 }
 `;
 

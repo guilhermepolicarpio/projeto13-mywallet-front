@@ -1,28 +1,53 @@
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState,useEffect} from "react";
+import {ThreeDots} from "react-loader-spinner"
+import { signIn } from '../services/Services';
 
 export default function Login(){
 
     const [values, setValues] = useState({ email: '', password: '' });
+    const [loading,setLoading]=useState(false);
+    let navigate = useNavigate();
       
     const Change = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
-    return(
-        <Box>
-            <h1>My Wallet</h1>
-            <Forms >
-                <Input type="email"  placeholder=" E-mail" name='email' onChange={Change} value={values.email}/>
-                <Input type="password" placeholder=" Senha" name='password' onChange={Change} value={values.password}/>
-                <button type="submit">
-                <Link to="/Home"> <p> Entrar</p></Link>
-                </button>
-            </Forms>
-            <Link to="/Registration"><h3>Primeira vez? Cadastre-se!</h3></Link>
-        </Box>
-        
-    )
+    const SendLogin = (e) =>{ 
+    e.preventDefault();
+    setLoading(true)
+    signIn(values).then((e) => {
+    
+    navigate("/Home")
+    })
+
+    signIn(values).catch((e) => {
+        console.log(e)
+    alert("Erro no login")
+    setLoading(false)
+    })
+    }
+
+return(
+<Box>
+    <h1>My Wallet</h1>
+    <Forms onSubmit={(e) => SendLogin(e)} >
+        <Input type="email"  placeholder=" E-mail" name='email' onChange={Change} value={values.email} required/>
+        <Input type="password" placeholder=" Senha" name='password' onChange={Change} value={values.password} required/>
+        {!loading? 
+        <button type="submit">
+            <Link to="/Home"> <p> Entrar</p></Link>
+        </button>
+        :
+        <ThreeDots color="white" height={40} width ={40}/>
+        }
+
+    </Forms>
+    <Link to="/Registration"><h3>Primeira vez? Cadastre-se!</h3></Link>
+</Box>
+
+)
 }
 
 const Box = styled.div`

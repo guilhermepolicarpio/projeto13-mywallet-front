@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export default function Operation(){
 
@@ -71,6 +72,7 @@ cursor:pointer;
 }
 p{
 color:white;
+text-decoration: none;
 }
 `;
 

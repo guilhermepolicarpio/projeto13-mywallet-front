@@ -1,26 +1,51 @@
 import styled from 'styled-components';
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import {ThreeDots} from "react-loader-spinner"
+import { signUp } from '../services/Services';
 
 export default function Registration(){
 
 const [values, setValues] = useState({ name: '', email:'', password:'', confirmPassword:''});
+const [loading,setLoading]=useState(false);
 let navigate = useNavigate();
 
 const Change = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
 }
 
+const SendForm = (e) =>{   
+    e.preventDefault();
+    console.log(values)
+    signUp(values).then(() => {
+        setLoading(true)
+        console.log("olaaa")
+        alert("Usuario criado com sucesso!")
+        
+        
+    })
+    
+    .catch((res) => {
+        console.log(res)
+        alert("Usuario ja cadastrado")
+      })
+    }
+
 return(
 <Box>
     <h1>My Wallet</h1>
-<Forms >
+<Forms onSubmit={(e) => SendForm(e)}>
     <Input type="text"  placeholder=" Nome" name='name' onChange={Change} value={values.name} />
     <Input type="email"  placeholder=" E-mail" name='email' onChange={Change} value={values.email} />
     <Input type="password"  placeholder=" Senha" name='password' onChange={Change} value={values.password} />
-    <Input type="password"  placeholder=" Confirme a senha" name='password2' onChange={Change} value={values.confirmPassword} />
-    <button type="submit">
-        <p> Cadastrar</p>
-    </button>
+    <Input type="password"  placeholder=" Confirme a senha" name='confirmPassword' onChange={Change} value={values.confirmPassword} />
+    {!loading? 
+        <button type="submit">
+             <p> Cadastrar</p>
+        </button>
+        :
+        <ThreeDots color="white" height={40} width ={40}/>
+    }
 </Forms>
 <Link to="/"><h3>Já tem uma conta? Entre agora!</h3></Link>
 </Box>
