@@ -1,31 +1,34 @@
 import styled from 'styled-components';
 import { Link, useNavigate } from "react-router-dom";
-import { useState,useEffect} from "react";
+import { useState,useContext} from "react";
 import {ThreeDots} from "react-loader-spinner"
 import { signIn } from '../services/Services';
+import Token from "../context/token.js"
 
 export default function Login(){
 
     const [values, setValues] = useState({ email: '', password: '' });
     const [loading,setLoading]=useState(false);
+    const {setToken} = useContext(Token);
     let navigate = useNavigate();
       
     const Change = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
-    const SendLogin = (e) =>{ 
+    function SendLogin(e){ 
     e.preventDefault();
     setLoading(true)
-    signIn(values).then((e) => {
-    
-    navigate("/Home")
+    signIn(values).then((res) => {
+        setToken(res.data);
+        console.log(res.data)
+        navigate("/Home")
+       
     })
 
-    signIn(values).catch((e) => {
-        console.log(e)
-    alert("Erro no login")
-    setLoading(false)
+      .catch((res) => {
+        alert("Erro no login")
+        setLoading(false)
     })
     }
 
@@ -37,7 +40,7 @@ return(
         <Input type="password" placeholder=" Senha" name='password' onChange={Change} value={values.password} required/>
         {!loading? 
         <button type="submit">
-            <Link to="/Home"> <p> Entrar</p></Link>
+             <p> Entrar</p>
         </button>
         :
         <ThreeDots color="white" height={40} width ={40}/>

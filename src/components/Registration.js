@@ -17,16 +17,15 @@ const Change = (e) => {
 const SendForm = (e) =>{   
     e.preventDefault();
     console.log(values)
-    signUp(values).then(() => {
-        setLoading(true)
-        console.log("olaaa")
+    setLoading(true)
+    signUp(values).then(() => {  
         alert("Usuario criado com sucesso!")
-        
-        
+        navigate("/")        
     })
     
     .catch((res) => {
         console.log(res)
+        setLoading(false)
         alert("Usuario ja cadastrado")
       })
     }

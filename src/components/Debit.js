@@ -1,15 +1,32 @@
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
 import { useState} from "react";
+import { debit } from '../services/Services';
+import { useNavigate } from "react-router-dom";
 
-export default function Operation(){
+export default function Debit(){
 
+    let navigate = useNavigate();
     const [values, setValues] = useState({ value: '', description: '' });
       
     const Change = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
+    function sendDebit(e){
+        e.preventDefault();
+        console.log(values)
+        debit(values).then((e) => {
+            console.log(e)
+            navigate("/Home")
+           
+        })
+    
+          .catch((e) => {
+            alert("Erro no envio de debito")
+            //setLoading(false)
+        })
+    }
 
 return(
     <>
@@ -18,7 +35,7 @@ return(
     </Header>
     <Box>
        
-        <Forms >
+    <Forms onSubmit={(e) => sendDebit(e)}>
             <Input type="value"  placeholder=" Valor" name='value' onChange={Change} value={values.value}/>
             <Input type="text" placeholder=" Descrição" name='description' onChange={Change} value={values.description}/>
             <button type="submit">

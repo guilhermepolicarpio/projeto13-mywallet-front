@@ -1,12 +1,15 @@
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
+import Token from "../context/token.js"
+import { useState,useContext} from "react";
 
 export default function Home(){
-
+    const {token,setToken} = useContext(Token);
+    console.log(token)
 return(
 <Box>
     <Header>  
-        <h1>Olá, Fulano</h1>
+        <h1>Olá, {token.name}</h1>
         <ion-icon name="log-out-outline"></ion-icon>
     </Header>
     <InformationBox>

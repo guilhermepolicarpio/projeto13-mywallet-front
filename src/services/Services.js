@@ -12,4 +12,14 @@ const promise=`${SERVER_URL}/sign-in`;
 return axios.post(promise,values);
 }
 
-export {signUp, signIn};
+function credit(values){
+    const promise=`${SERVER_URL}/credit`;
+    return axios.post(promise,values);
+}
+
+function debit(values){
+    const promise=`${SERVER_URL}/credit`;
+    return axios.post(promise,values);
+}
+
+export {signUp, signIn,credit,debit};

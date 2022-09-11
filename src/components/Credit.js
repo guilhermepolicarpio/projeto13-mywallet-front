@@ -1,13 +1,30 @@
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { credit } from '../services/Services';
 
-export default function Operation(){
+export default function Credit(){
 
+    let navigate = useNavigate();
     const [values, setValues] = useState({ value: '', description: '' });
       
     const Change = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
+    }
+
+    function sendCredit(e){
+        e.preventDefault();
+        console.log(values)
+        credit(values).then((e) => {
+            console.log(e)
+            navigate("/Home")
+           
+        })
+    
+          .catch((e) => {
+            alert("Erro no envio de credito")
+            //setLoading(false)
+        })
     }
 
 return(
@@ -17,17 +34,17 @@ return(
     </Header>
     <Box>
        
-        <Forms >
+        <Forms onSubmit={(e) => sendCredit(e)}>
             <Input type="value"  placeholder=" Valor" name='value' onChange={Change} value={values.value}/>
             <Input type="text" placeholder=" Descrição" name='description' onChange={Change} value={values.description} />
             <button type="submit">
-            <Link to="/Home"> <p> Salvar entrada</p></Link>
+            <p> Salvar entrada</p>
             </button>
         </Forms>
     </Box>
     </>
-)
-}
+)}
+
 const Box = styled.div`
 
 display: flex;
