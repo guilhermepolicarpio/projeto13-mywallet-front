@@ -31,7 +31,4 @@ return(
  </Token.Provider>
 )}
 
-ReactDOM.render(
-    <React.StrictMode>
-        <Initial />
-    </React.StrictMode>, rootHtml);
+ReactDOM.render(<Initial />, rootHtml);

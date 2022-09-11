@@ -21,7 +21,6 @@ export default function Login(){
     setLoading(true)
     signIn(values).then((res) => {
         setToken(res.data);
-        console.log(res.data)
         navigate("/Home")
        
     })

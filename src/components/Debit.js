@@ -1,22 +1,31 @@
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
-import { useState} from "react";
+import { useState,useContext } from "react";
 import { debit } from '../services/Services';
 import { useNavigate } from "react-router-dom";
+import {ThreeDots} from "react-loader-spinner"
+import Token from "../context/token.js"
 
 export default function Debit(){
 
     let navigate = useNavigate();
+    const {token,setToken} = useContext(Token);
     const [values, setValues] = useState({ value: '', description: '' });
+    const [loading,setLoading]=useState(false);
       
     const Change = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
     function sendDebit(e){
+        const config={
+            headers: {"Authorization": `Bearer ${token.token}`
+        }}
+
         e.preventDefault();
+        setLoading(true)
         console.log(values)
-        debit(values).then((e) => {
+        debit(values,config).then((e) => {
             console.log(e)
             navigate("/Home")
            
@@ -24,7 +33,7 @@ export default function Debit(){
     
           .catch((e) => {
             alert("Erro no envio de debito")
-            //setLoading(false)
+            setLoading(false)
         })
     }
 
@@ -38,9 +47,14 @@ return(
     <Forms onSubmit={(e) => sendDebit(e)}>
             <Input type="value"  placeholder=" Valor" name='value' onChange={Change} value={values.value}/>
             <Input type="text" placeholder=" Descrição" name='description' onChange={Change} value={values.description}/>
-            <button type="submit">
-            <Link to="/Home"> <p> Salvar saida</p></Link>
-            </button>
+            {!loading? 
+        <button type="submit">
+             <p> Salvar saída</p>
+        </button>
+        :
+        <ThreeDots color="white" height={40} width ={40}/>
+        }
+
         </Forms>
     </Box>
     </>

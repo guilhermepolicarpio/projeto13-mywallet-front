@@ -1,11 +1,33 @@
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import Token from "../context/token.js"
-import { useState,useContext} from "react";
+import { useState,useContext, useEffect} from "react";
+import { getTransition } from '../services/Services';
+import Movimentation from "./Movimentation"
 
 export default function Home(){
-    const {token,setToken} = useContext(Token);
-    console.log(token)
+    let navigate = useNavigate();
+    const {token} = useContext(Token);
+    const [transation,setTransation]=useState([]);
+   
+    useEffect(() =>{
+        
+        const config={
+            headers: {"Authorization": `Bearer ${token.token}`
+        }}
+
+        getTransition(config).then((res) => {
+            console.log(res.data)
+            setTransation(res.data)
+            navigate("/Home")
+         
+        })
+        .catch((res) => {
+            alert(res)
+        })
+
+    },[])
+
 return(
 <Box>
     <Header>  
@@ -13,7 +35,13 @@ return(
         <ion-icon name="log-out-outline"></ion-icon>
     </Header>
     <InformationBox>
+    {
+        transation.length>0 ?
+        transation.map((movimentation,index)=> 
+        <Movimentation key={index} value={movimentation.value} description ={movimentation.description} type = {movimentation.type}/>)
+        :
         <p>Não há registros de entrada ou saída</p>
+    }
     </InformationBox>
     <Footer>
         <Operation>

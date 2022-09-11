@@ -1,21 +1,29 @@
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState,useContext } from "react";
+import Token from "../context/token.js"
 import { credit } from '../services/Services';
+import {ThreeDots} from "react-loader-spinner"
 
 export default function Credit(){
 
     let navigate = useNavigate();
+    const {token,setToken} = useContext(Token);
     const [values, setValues] = useState({ value: '', description: '' });
+    const [loading,setLoading]=useState(false);
       
     const Change = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
     function sendCredit(e){
+        const config={
+            headers: {"Authorization": `Bearer ${token.token}`
+        }}
+
         e.preventDefault();
-        console.log(values)
-        credit(values).then((e) => {
+        setLoading(true)
+        credit(values,config).then((e) => {
             console.log(e)
             navigate("/Home")
            
@@ -23,7 +31,7 @@ export default function Credit(){
     
           .catch((e) => {
             alert("Erro no envio de credito")
-            //setLoading(false)
+            setLoading(false)
         })
     }
 
@@ -33,13 +41,16 @@ return(
     <h1>Nova entrada</h1>
     </Header>
     <Box>
-       
         <Forms onSubmit={(e) => sendCredit(e)}>
             <Input type="value"  placeholder=" Valor" name='value' onChange={Change} value={values.value}/>
             <Input type="text" placeholder=" Descrição" name='description' onChange={Change} value={values.description} />
-            <button type="submit">
-            <p> Salvar entrada</p>
-            </button>
+            {!loading? 
+        <button type="submit">
+             <p> Salvar entrada</p>
+        </button>
+        :
+        <ThreeDots color="white" height={40} width ={40}/>
+        }
         </Forms>
     </Box>
     </>
