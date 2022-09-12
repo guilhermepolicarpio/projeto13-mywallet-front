@@ -25,14 +25,13 @@ export default function Debit(){
         e.preventDefault();
         setLoading(true)
         console.log(values)
-        debit(values,config).then((e) => {
-            console.log(e)
+        debit(values,config).then((res) => {
+            console.log(res)
             navigate("/Home")
-           
         })
     
-          .catch((e) => {
-            alert("Erro no envio de debito")
+          .catch((res) => {
+            alert(res.response.data)
             setLoading(false)
         })
     }

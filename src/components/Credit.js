@@ -23,14 +23,13 @@ export default function Credit(){
 
         e.preventDefault();
         setLoading(true)
-        credit(values,config).then((e) => {
-            console.log(e)
+        credit(values,config).then((res) => {
+            console.log(res)
             navigate("/Home")
-           
         })
     
-          .catch((e) => {
-            alert("Erro no envio de credito")
+          .catch((res) => {
+            alert(res.response.data)
             setLoading(false)
         })
     }
@@ -42,7 +41,7 @@ return(
     </Header>
     <Box>
         <Forms onSubmit={(e) => sendCredit(e)}>
-            <Input type="value"  placeholder=" Valor" name='value' onChange={Change} value={values.value}/>
+            <Input type="number"  placeholder=" Valor" name='value' onChange={Change} value={values.value}/>
             <Input type="text" placeholder=" Descrição" name='description' onChange={Change} value={values.description} />
             {!loading? 
         <button type="submit">

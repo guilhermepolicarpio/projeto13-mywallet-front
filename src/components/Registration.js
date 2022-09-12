@@ -24,9 +24,8 @@ const SendForm = (e) =>{
     })
     
     .catch((res) => {
-        console.log(res)
-        setLoading(false)
-        alert("Usuario ja cadastrado")
+        alert(res.response.data)
+        setLoading(false);
       })
     }
 

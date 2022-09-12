@@ -21,12 +21,11 @@ export default function Login(){
     setLoading(true)
     signIn(values).then((res) => {
         setToken(res.data);
-        navigate("/Home")
-       
+        navigate("/Home")  
     })
 
       .catch((res) => {
-        alert("Erro no login")
+        alert(res.response.data)
         setLoading(false)
     })
     }
