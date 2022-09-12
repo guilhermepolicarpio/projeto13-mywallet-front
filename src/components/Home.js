@@ -8,7 +8,7 @@ import Movimentation from "./Movimentation"
 export default function Home(){
     let navigate = useNavigate();
     var saldo = 0;
-    const {token} = useContext(Token);
+    const {token,setToken} = useContext(Token);
     const [transation,setTransation]=useState([]);
    
     useEffect(() =>{
@@ -38,12 +38,19 @@ export default function Home(){
         }
     }
 
+    function logout(){
+        if(window.confirm("Você deseja fazer logout?")){
+            localStorage.removeItem("activeUser");
+            setToken("");
+            navigate("/");
+        }
+    }
 return(
 <Box>
     <Header>  
         <h1>Olá, {token.name}</h1>
         <ion-icon 
-        onClick={() => navigate("/")}
+        onClick={logout}
         name="log-out-outline">
             
         </ion-icon>

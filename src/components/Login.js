@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Link, useNavigate } from "react-router-dom";
-import { useState,useContext} from "react";
+import { Link, useNavigate} from "react-router-dom";
+import { useState,useContext,useEffect} from "react";
 import {ThreeDots} from "react-loader-spinner"
 import { signIn } from '../services/Services';
 import Token from "../context/token.js"
@@ -16,11 +16,19 @@ export default function Login(){
         setValues({ ...values, [e.target.name]: e.target.value });
     }
 
+    useEffect(() =>{
+        if(localStorage.getItem("activeUser")!==null){
+            setToken(JSON.parse(localStorage.getItem("activeUser")))
+            navigate("/Home")
+        }
+    },[])
+
     function SendLogin(e){ 
     e.preventDefault();
     setLoading(true)
     signIn(values).then((res) => {
         setToken(res.data);
+        localStorage.setItem("activeUser", JSON.stringify(res.data));
         navigate("/Home")  
     })
 
